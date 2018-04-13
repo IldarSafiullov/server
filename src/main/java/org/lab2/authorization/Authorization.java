@@ -3,8 +3,8 @@ package org.lab2.authorization;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.lab2.io.Reader;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -19,15 +19,13 @@ public class Authorization implements Runnable{
     @Override
     public void run() {
         try {
-            DataInputStream din = new DataInputStream(socket.getInputStream());
-            String userStr = din.readUTF();
-            System.out.println(userStr);
+            String message = new Reader(socket).readMessage();
 
             Gson gson = new GsonBuilder()
                     .setPrettyPrinting()
                     .create();
-            User user = gson.fromJson(userStr, User.class);
-            System.out.println(user);
+            AuthForm authForm = gson.fromJson(message, AuthForm.class);
+            System.out.println(authForm);
         } catch (IOException e) {
             e.printStackTrace();
         }

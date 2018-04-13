@@ -13,7 +13,6 @@ public class Server{
         while (true){
             Socket socket = serverSocket.accept();
             new Thread(new Authorization(socket)).start();
-
         }
     }
 }
